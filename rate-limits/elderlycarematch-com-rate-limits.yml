@@ -1,0 +1,34 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Response headers observed on https://www.elderlycarematch.com/a2a/v1 (GET descriptor, POST SendMessage,
+  POST tasks/get) and https://www.elderlycarematch.com/.well-known/agent-card.json on 2026-09-19.
+docs:
+- https://www.elderlycarematch.com/llms.txt
+limit_count: 0
+summary: >-
+  No rate limit is published and no rate-limit header is returned. llms.txt and the agent card document the
+  per-call cap (limit <= 20 results per find-care-facilities call) but no request ceiling, and none of the
+  seven standard headers appeared on any observed response. An honest zero measured from live responses.
+limits: []
+per_call_caps:
+- {skill: find-care-facilities, parameter: limit, max: 20, source: agent card skill description}
+response_headers:
+  observed: []
+  checked_for: [RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+  note: >-
+    None appeared. Responses carry only edge headers (server Vercel, x-vercel-id, x-vercel-cache,
+    x-railway-edge, x-railway-request-id, x-hikari-trace) and Cache-Control. An agent gets no pacing signal
+    and would learn a limit only by being refused.
+exhaustion_status: null
+enforcement:
+  documented: false
+  inferred: >-
+    The origin is an Express app on Railway behind Vercel's edge (per response headers), both of which can
+    throttle; nothing states that they do. Recorded as inference, not as a published limit.
+x-evidence:
+  fetched: '2026-09-19'
+  probes:
+  - {url: 'https://www.elderlycarematch.com/a2a/v1', method: POST, status: 200, rate_limit_headers: none}
+  - {url: 'https://www.elderlycarematch.com/a2a/v1', method: GET, status: 200, rate_limit_headers: none}
+  - {url: 'https://www.elderlycarematch.com/.well-known/agent-card.json', status: 200, rate_limit_headers: none, cache_control: 'public, max-age=300'}

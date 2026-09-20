@@ -1,0 +1,82 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live GET probes of the named /.well-known/* path list on 2026-09-19 against elderlycarematch.com and
+  www.elderlycarematch.com — the website, the A2A JSON-RPC host (https://www.elderlycarematch.com/a2a/v1)
+  and the docs host (llms.txt) are all one origin. Every row is a request that was issued; every status is
+  the one returned. There is no MCP server host and no separate API host to add to the set.
+summary:
+  hosts_probed: 2
+  paths_probed: 18
+  documents_served: 2
+  path_echo_control: passed
+  note: >-
+    www.elderlycarematch.com serves exactly one well-known document, the A2A agent card, at both the
+    canonical /.well-known/agent-card.json and the legacy /.well-known/agent.json (byte-identical, 9,905
+    bytes, application/json). Nothing else on the list is served: no security.txt, no OpenID or OAuth
+    discovery (the agent needs no credential, so none is expected), no api-catalog, no ai-plugin.json, no
+    UCP/ACP/AAuth, and no apis.json at either location. The apex host 307s every path to www. Unknown
+    /.well-known/* paths return a Vercel text/plain 404, so the two 200s are real documents. OUTSIDE
+    /.well-known/ the SPA catch-all answers 200 text/html (the 2,316-byte index shell) for any path,
+    including /apis.json and /apis.yml — those are recorded as SPA shells and treated as misses.
+  negative_control: >-
+    GET /.well-known/elderlycarematch-negative-control-7f3a9c1e.json returned 404 (text/plain, 79 bytes,
+    "The page could not be found NOT_FOUND") on www, and 307 to the same www path on the apex.
+hosts:
+- host: elderlycarematch.com
+  role: registrable domain (apex) — redirects every path to www with a 307
+  documents:
+  - {path: /.well-known/security.txt, status: 307, redirect: https://www.elderlycarematch.com/.well-known/security.txt}
+  - {path: /.well-known/openid-configuration, status: 307}
+  - {path: /.well-known/oauth-authorization-server, status: 307}
+  - {path: /.well-known/oauth-protected-resource, status: 307}
+  - {path: /.well-known/api-catalog, status: 307}
+  - {path: /.well-known/api-catalog.json, status: 307}
+  - {path: /.well-known/ai-plugin.json, status: 307}
+  - {path: /.well-known/ucp.json, status: 307}
+  - {path: /.well-known/acp.json, status: 307}
+  - {path: /.well-known/aauth-resource.json, status: 307}
+  - {path: /.well-known/apis.json, status: 307}
+  - {path: /apis.json, status: 307}
+  - {path: /apis.yml, status: 307}
+  - {path: /.well-known/agent-card.json, status: 307, redirect: https://www.elderlycarematch.com/.well-known/agent-card.json}
+  - {path: /.well-known/agent.json, status: 307}
+  - {path: /.well-known/mcp.json, status: 307}
+  - {path: /llms.txt, status: 307}
+  - {path: /.well-known/elderlycarematch-negative-control-7f3a9c1e.json, status: 307, note: negative control}
+- host: www.elderlycarematch.com
+  role: Website (canonical), A2A JSON-RPC host (/a2a/v1), docs host (/llms.txt)
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/api-catalog.json, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /apis.json, status: 200, content_type: text/html, note: 'SPA index shell (2,316 bytes), not an APIs.json — treated as a miss'}
+  - {path: /apis.yml, status: 200, content_type: text/html, note: 'SPA index shell, not an APIs.yml — treated as a miss'}
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 9905
+    file: a2a/elderlycarematch-com-agent-card.json
+    note: A2A 1.0 agent card, graded in a2a/elderlycarematch-com-a2a.yml.
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 9905
+    file: a2a/elderlycarematch-com-agent-card.json
+    note: Legacy A2A path; byte-identical to agent-card.json.
+  - {path: /.well-known/mcp.json, status: 404}
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    bytes: 19446
+    file: llms/elderlycarematch-com-llms.txt
+    note: Not a /.well-known/ path; recorded here because it is the card's documentationUrl and the only docs surface.
+  - {path: /.well-known/elderlycarematch-negative-control-7f3a9c1e.json, status: 404, note: 'negative control — text/plain NOT_FOUND, host does not path-echo'}

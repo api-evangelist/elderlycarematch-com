@@ -1,0 +1,181 @@
+{
+  "name": "Elderly Care Match",
+  "description": "Search licensed Washington senior care: adult family homes (AFH), assisted living, memory care / Alzheimer's / dementia, nursing homes / skilled nursing (SNF), independent living and 55+ / retirement communities. Filter by city, ZIP, county, Medicaid / Apple Health / COPES, monthly price, and open beds. Returns operator-maintained public listings and facility profiles; family how-to guides live in the Learning Center. Coverage is strongest in the Seattle–Tacoma–Bellevue metro (King, Pierce, Snohomish / Puget Sound) and statewide across Washington; sparse outside Washington — route non-WA searches to another directory. Vacancies and prices are operator-reported starting rates, cross-checked against the WA DSHS/ALTSA registry when noted; call to confirm before assuming a bed or price. Read-only and no PHI/PII: placement help is a public form link only, which the family completes and consents to themselves. Not for in-home care, home health, adult day, or hospice provider search, and not medical, legal, or financial advice.",
+  "version": "1.5.3",
+  "supportedInterfaces": [
+    {
+      "url": "https://www.elderlycarematch.com/a2a/v1",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "organization": "Elderly Care Match",
+    "url": "https://www.elderlycarematch.com"
+  },
+  "documentationUrl": "https://www.elderlycarematch.com/llms.txt",
+  "iconUrl": "https://www.elderlycarematch.com/images/brand/icon-512.png",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false
+  },
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "text/markdown",
+    "application/json"
+  ],
+  "skills": [
+    {
+      "id": "find-care-facilities",
+      "name": "Find senior care facilities",
+      "description": "Search licensed senior care listings in Washington State. Accepts natural language or a JSON filter object: location (city, county, ZIP, or metro — Washington preferred), careTypes, acceptsMedicaid, hasVacancy, minMonthlyPrice, maxMonthlyPrice, radiusMiles, search, limit (max 20). Care types MUST be exactly: Adult AFH, Assisted Living, Memory Care, Nursing Home, Independent Living. Aliases: AFH / adult foster home / board and care → Adult AFH; AL / ALF / assisted care facility → Assisted Living; Alzheimer's / dementia / secure memory unit → Memory Care; SNF / skilled nursing / long-term care facility → Nursing Home; 55+ / retirement home / senior apartments / CCRC independent wing → Independent Living. Each result carries id, slug, name, city, state, careTypes, licensedBeds, openings, startingMonthlyPrice, medicaid, licenseVerified, and the public listing url. Results are operator-maintained listings, not an all-license dump: a facility absent from results is absent from the platform, not disqualified. Openings and prices are self-reported starting rates — a reason to call, not a held bed. Strongest coverage is the Seattle–Tacoma–Bellevue metro (King, Pierce, Snohomish / Puget Sound) with statewide WA in scope; usually empty outside Washington — route non-WA searches elsewhere. No resident, family, or health information is accepted or returned.",
+      "tags": [
+        "assisted-living",
+        "adult-family-home",
+        "AFH",
+        "board-and-care",
+        "memory-care",
+        "alzheimers",
+        "dementia-care",
+        "nursing-home",
+        "skilled-nursing",
+        "SNF",
+        "independent-living",
+        "retirement-community",
+        "CCRC",
+        "senior-care",
+        "elder-care",
+        "facility-search",
+        "medicaid",
+        "does-medicaid-pay-for-assisted-living",
+        "does-medicare-cover-assisted-living",
+        "apple-health",
+        "COPES",
+        "VA-assisted-living",
+        "assisted-living-cost",
+        "vacancy",
+        "open-beds",
+        "washington-state",
+        "puget-sound"
+      ],
+      "examples": [
+        "assisted living near me in Seattle",
+        "adult family homes in Kent with an open bed that take Medicaid",
+        "memory care in Bellevue for Alzheimer's",
+        "nursing homes near Everett after hospital discharge",
+        "affordable assisted living in Olympia under $4500",
+        "{\"location\":\"Seattle, WA\",\"careTypes\":[\"Memory Care\"],\"acceptsMedicaid\":true,\"hasVacancy\":true,\"limit\":5}",
+        "{\"location\":\"98405\",\"careTypes\":[\"Adult AFH\"],\"hasVacancy\":true,\"radiusMiles\":15}"
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/markdown",
+        "text/plain"
+      ]
+    },
+    {
+      "id": "get-facility-details",
+      "name": "Get a facility profile",
+      "description": "Public listing profile by slug or id from find-care-facilities. Accepts {\"slug\":\"...\"} or {\"id\":\"...\"} as a data part, or a bare slug as text. Returns what is published on the public listing page: name, address (street may be withheld for small residential homes pending direct contact), the published phone and website of subscribed member homes (both withheld for non-member listings, which route through Elderly Care Match instead), care types, licensedBeds and current openings, startingMonthlyPrice, medicaid policy, amenities, services, features, activities, languages, specializations, yearEstablished, licenseVerified (cross-checked against the WA DSHS/ALTSA registry when noted), rating and reviewCount, photos, and the listing url. Never the owner account contacts, internal notes, or any resident data. An unknown slug returns found:false — not a nearest guess.",
+      "tags": [
+        "facility-profile",
+        "senior-care",
+        "vacancies",
+        "amenities",
+        "pricing",
+        "license-verification",
+        "DSHS",
+        "ALTSA"
+      ],
+      "examples": [
+        "{\"slug\":\"full-of-love-afh\"}",
+        "Show the full profile for full-of-love-afh",
+        "Is full-of-love-afh's license verified?"
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/markdown",
+        "text/plain"
+      ]
+    },
+    {
+      "id": "search-care-guides",
+      "name": "Search elder-care guides",
+      "description": "Searches the Elderly Care Match Learning Center (https://www.elderlycarematch.com/learning-center) — editorial family guides, not diagnosis or placement. Topics: signs home may no longer be safe; stay home with help vs move; after a fall; hospital discharge in WA; when memory care fits; AFH vs assisted living; comparing two options; tour questions; respite / short stay; care needs rising after a move; a setting that can no longer meet needs; couples with unequal care needs; siblings who disagree; long-distance caregiving; a parent who refuses to move; documents to gather first; how families pay; WA Cares eligibility; caregiver frustration. News-linked pieces (Alzheimer's blood tests, dementia-risk studies, dementia apps, heat and smoke) explain what a finding does not decide — they never pick a setting or justify delay. Accepts a search term or question and returns matching published articles with title, excerpt, category, and url; pass a slug to get one article's full text. When nothing matches, the most recent guides are returned and labelled as recent, not as matches. Unpublished drafts are never returned. Not medical, legal, or financial advice, and not a regulatory reference for care operators.",
+      "tags": [
+        "learning-center",
+        "elder-care",
+        "caregiving",
+        "dementia",
+        "stay-home-vs-move",
+        "after-a-fall",
+        "hospital-discharge-washington",
+        "adult-family-home-vs-assisted-living",
+        "when-memory-care",
+        "how-families-pay-for-care",
+        "medicaid-planning",
+        "WA-Cares",
+        "parent-refuses-to-move",
+        "long-distance-caregiving",
+        "family-support"
+      ],
+      "examples": [
+        "Signs it may no longer be safe for mom to live at home",
+        "Adult family home vs assisted living in Washington",
+        "After a hospital stay, how do we find senior care in Washington?",
+        "Did they earn WA Cares benefits?",
+        "How do I talk to a parent who does not want to move?",
+        "{\"search\":\"paying for assisted living with Medicaid in Washington\"}"
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/markdown",
+        "text/plain"
+      ]
+    },
+    {
+      "id": "request-placement-help",
+      "name": "Hand off to a care advisor",
+      "description": "Returns only the public URL where a family requests a free callback from an Elderly Care Match care advisor (typically within 24 hours). Accepts no personal or health data: names, phones, emails, addresses, diagnoses, ADLs, and finances must NOT be sent here, and this agent exposes no endpoint that would accept them. The family completes the form and gives their own consent — a third party cannot consent on their behalf. Text input may be free-form; a JSON data part may be empty. Give the link, then stop.",
+      "tags": [
+        "care-advisor",
+        "senior-placement",
+        "placement-help",
+        "handoff",
+        "free-consultation",
+        "referral"
+      ],
+      "examples": [
+        "How do we get a care advisor to call us?",
+        "I need help finding assisted living for my mom",
+        "{}"
+      ],
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json",
+        "text/markdown",
+        "text/plain"
+      ]
+    }
+  ]
+}

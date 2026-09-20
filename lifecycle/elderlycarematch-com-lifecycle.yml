@@ -1,0 +1,44 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.elderlycarematch.com/a2a/v1
+derived_from: a2a/elderlycarematch-com-agent-card.json
+docs:
+- https://www.elderlycarematch.com/llms.txt
+versioning:
+  scheme: path-versioned endpoint (/a2a/v1); semantic card version; A2A protocolVersion in the interface entry
+  current_version: 1.5.3 (agent card version) / A2A 1.0 (supportedInterfaces[0].protocolVersion and the GET descriptor) / endpoint path v1
+  base_url: https://www.elderlycarematch.com/a2a/v1
+  policy_published: false
+  note: >-
+    The endpoint path carries v1, the card carries a three-part version (1.5.3) that has evidently been
+    bumped through several revisions, and the descriptor and card agree on protocol 1.0. No versioning or
+    compatibility policy is published anywhere — llms.txt and the card are the only documentation and neither
+    states how v1 will be retired or how the 0.3-era method aliases (message/send, tasks/get, still accepted)
+    will be treated.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: No Deprecation or Sunset header on any observed response; no deprecation policy page.
+status_page:
+  published: false
+  probed:
+  - {url: 'https://www.elderlycarematch.com/status', status: 200, note: SPA index shell, not a status page}
+  note: >-
+    No status page. The GET descriptor on /a2a/v1 returns {"status":"ok"} which is a liveness signal, not
+    availability history. a2aregistry.org reports uptime_percentage 100 and is_healthy true for the card,
+    which is a third party's measurement rather than the provider's.
+sla:
+  published: false
+  note: No SLA. The privacy policy and terms carry no availability commitment for the agent or the site.
+changelog:
+  published: false
+  probed:
+  - {url: 'https://www.elderlycarematch.com/changelog', status: 200, note: SPA index shell}
+policy_documents:
+  terms_of_service: {url: 'https://www.elderlycarematch.com/terms-of-service', last_updated: '2025-12-26', note: 'Dated in the page text ("These Terms of Service were last updated on December 26, 2025"); rendered client-side.'}
+  privacy_policy: {url: 'https://www.elderlycarematch.com/privacy-policy', last_updated: '2025-12-26'}
+  cookie_policy: {url: 'https://www.elderlycarematch.com/cookie-policy', last_updated: '2025-10-21'}
+  accessibility_statement: {url: 'https://www.elderlycarematch.com/accessibility', last_updated: '2025-10-21'}

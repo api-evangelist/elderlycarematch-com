@@ -1,0 +1,95 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.elderlycarematch.com/.well-known/agent-card.json
+docs:
+- https://www.elderlycarematch.com/llms.txt
+- https://www.elderlycarematch.com/robots.txt
+sector: senior-care directory / placement referral (Washington State, USA)
+summary: >-
+  Elderly Care Match's machine surface is an Agent2Agent stack and nothing else: an A2A 1.0-shaped agent
+  card at the RFC 8615 well-known path (also mirrored at the legacy agent.json path), a JSON-RPC 2.0
+  endpoint that completes real tasks anonymously, an llms.txt that documents the agent, and a robots.txt
+  that explicitly Allow-lists /.well-known/ and /a2a/ for every crawler including the named AI agents. It
+  declares no OAuth/OIDC (none is needed), no RFC 9457 problem details (errors are JSON-RPC error
+  objects), no RFC 9116 security.txt, no RFC 9727 api-catalog and no OpenAPI. No healthcare interchange
+  standard (FHIR, HL7v2, X12) is declared on the contract, and none is expected: the agent serves public
+  facility-directory records, not clinical or claims data. The privacy policy claims HIPAA-covered-entity
+  status for the human platform's intake forms, which is a legal regime claim about the website rather
+  than a contract conformance, and is recorded under regulatory/ instead.
+standards:
+- id: a2a
+  name: Agent2Agent protocol
+  version: '1.0'
+  conforms: true
+  grade: flavored (catalog rubric — no top-level protocolVersion; see a2a/elderlycarematch-com-a2a.yml)
+  evidence: >-
+    a2a/elderlycarematch-com-agent-card.json — supportedInterfaces[0] = {url https://www.elderlycarematch.com/a2a/v1,
+    protocolBinding JSONRPC, protocolVersion "1.0"}, capabilities object, skills[] of 4. Endpoint GET descriptor
+    reports protocol A2A 1.0 with methods SendMessage/GetTask/ListTasks; POST message/send returned a Task in
+    TASK_STATE_COMPLETED; tasks/get on an unknown id returned the A2A-defined -32001 TaskNotFoundError.
+- id: rfc8615
+  name: Well-Known URIs
+  conforms: true
+  evidence: >-
+    https://www.elderlycarematch.com/.well-known/agent-card.json served 200 application/json (9,905 bytes,
+    Cache-Control public max-age=300); negative-control path 404s, so the well-known surface is real.
+- id: jsonrpc-2.0
+  name: JSON-RPC 2.0
+  conforms: true
+  evidence: >-
+    https://www.elderlycarematch.com/a2a/v1 — result envelopes carry jsonrpc "2.0" and echo id; unknown
+    method returns the standard -32601 code; application-defined -32001 used for TaskNotFound.
+- id: llms-txt
+  name: llms.txt
+  conforms: true
+  evidence: >-
+    https://www.elderlycarematch.com/llms.txt served 200 text/plain (19,446 bytes): H1, blockquote summary,
+    H2 link sections (Key pages, Browse by care type, Recent articles, Agent interfaces, Sitemaps). Saved
+    verbatim to llms/elderlycarematch-com-llms.txt.
+- id: robots-txt
+  name: Robots Exclusion Protocol (RFC 9309)
+  conforms: true
+  evidence: >-
+    https://www.elderlycarematch.com/robots.txt — default group plus a named group for GPTBot, ChatGPT-User,
+    OAI-SearchBot, Google-Extended, PerplexityBot, ClaudeBot, Claude-Web, anthropic-ai, Amazonbot, Applebot,
+    cohere-ai, CCBot and GrokBot; both groups Disallow /api/ and the role dashboards and explicitly Allow
+    /.well-known/ and /a2a/. Sitemap directive present.
+- id: sitemaps
+  name: Sitemaps protocol
+  conforms: true
+  evidence: https://www.elderlycarematch.com/sitemap.xml — sitemapindex of four child sitemaps (static, articles, care-centers, categories), each with lastmod.
+- id: openapi
+  name: OpenAPI Specification
+  conforms: false
+  evidence: >-
+    No OpenAPI anywhere: /openapi.json, /openapi.yaml, /swagger.json, /api-docs and /docs on www all return
+    the 2,316-byte SPA index shell (text/html), and /api and /api/v1 return {"error":"Not found"}. /api/ is
+    robots-disallowed and was not probed further.
+- id: oauth2
+  name: OAuth 2.0 / OpenID Connect
+  conforms: false
+  evidence: No securitySchemes in the card; /.well-known/openid-configuration, oauth-authorization-server and oauth-protected-resource all 404. Not applicable — the agent is anonymous by design.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: Errors are JSON-RPC 2.0 error objects ({code, message}), not application/problem+json. See errors/elderlycarematch-com-problem-types.yml.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: https://www.elderlycarematch.com/.well-known/security.txt returned 404 (and /security.txt is the SPA shell).
+- id: rfc9727
+  name: API Catalog (/.well-known/api-catalog)
+  conforms: false
+  evidence: 404 at both /.well-known/api-catalog and /.well-known/api-catalog.json.
+- id: mcp
+  name: Model Context Protocol
+  conforms: false
+  evidence: 'POST tools/list to /a2a/v1 returned -32601 "Unknown method: tools/list"; /.well-known/mcp.json 404; no MCP server is published.'
+domain_standard_signature:
+  present: false
+  note: >-
+    The senior-care directory market has no interchange standard the contract could declare (no FHIR
+    Location/Organization resources, no HL7, no CMS Care Compare schema). The care-type vocabulary the card
+    enforces (Adult AFH, Assisted Living, Memory Care, Nursing Home, Independent Living) is the provider's
+    own, aligned with Washington DSHS/ALTSA licence categories by prose, not by a declared schema URN.
+    Reward-only check; nothing is invented to fill it.

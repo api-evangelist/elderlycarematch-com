@@ -1,0 +1,168 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.elderlycarematch.com/.well-known/agent-card.json
+card:
+  file: a2a/elderlycarematch-com-agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: www.elderlycarematch.com
+  note: >-
+    Served from the www host, which is the site's canonical origin: the apex elderlycarematch.com answers
+    every path, /.well-known/* included, with a 307 to www. The legacy /.well-known/agent.json returns the
+    byte-identical document (9,905 bytes, same ETag family). The host does not path-echo: every other
+    /.well-known/* name on the closed probe list returns a Vercel text/plain 404 ("The page could not be
+    found NOT_FOUND"), and a negative-control path
+    (/.well-known/elderlycarematch-negative-control-7f3a9c1e.json) also 404s, so the 200 is a served
+    document and not an SPA catch-all. Note that the SPA DOES catch-all at the site root — /openapi.json,
+    /apis.json, /rss.xml and /docs all answer 200 with the 2,316-byte index.html shell — which is why only
+    /.well-known/ and /a2a/ (both explicitly Allow-listed in robots.txt) count as served surfaces here.
+    Ownership is not in question: provider.organization is "Elderly Care Match" with provider.url
+    https://www.elderlycarematch.com, iconUrl and documentationUrl resolve on the same host, robots.txt
+    names the card by URL, and the site's own llms.txt links it under "Agent interfaces".
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://www.elderlycarematch.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_bytes: 9905
+  cache_control: public, max-age=300
+  body_parses_as: >-
+    JSON object with A2A 1.0 AgentCard shape (name, description, version, supportedInterfaces[], provider,
+    documentationUrl, iconUrl, capabilities, defaultInputModes, defaultOutputModes, skills[4])
+  corroborating_probes:
+  - url: https://www.elderlycarematch.com/.well-known/agent.json
+    http_status: 200
+    note: Byte-identical to agent-card.json (diff clean).
+  - url: https://elderlycarematch.com/.well-known/agent-card.json
+    http_status: 307
+    note: Redirects to https://www.elderlycarematch.com/.well-known/agent-card.json.
+  - url: https://www.elderlycarematch.com/.well-known/elderlycarematch-negative-control-7f3a9c1e.json
+    http_status: 404
+    note: Negative control — text/plain NOT_FOUND, 79 bytes. The well-known surface does not path-echo.
+  - url: https://www.elderlycarematch.com/a2a/v1
+    method: GET
+    http_status: 200
+    response: >-
+      {"service":"Elderly Care Match A2A endpoint","status":"ok","protocol":"A2A","protocolVersion":"1.0",
+      "transport":"JSONRPC","httpMethod":"POST","methods":["SendMessage","GetTask","ListTasks"],
+      "agentCard":"https://www.elderlycarematch.com/.well-known/agent-card.json",
+      "documentation":"https://www.elderlycarematch.com/llms.txt", ...}
+    note: The declared JSON-RPC endpoint self-describes on GET, names the A2A 1.0 method set and points back at the card.
+  - url: https://www.elderlycarematch.com/a2a/v1
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"message/send","params":{"message":{"role":"user","messageId":"ae-probe-1","parts":[{"kind":"text","text":"memory care in Bellevue"}]}}}'
+    http_status: 200
+    response_summary: >-
+      A completed Task (status.state TASK_STATE_COMPLETED) carrying one artifact named find-care-facilities
+      with five real Bellevue-area memory-care listings (name, city, care types, starting monthly price,
+      openings, license-verified flag and a public listing URL each). No credential was sent.
+    note: >-
+      A live, working, unauthenticated A2A agent. It also accepted the 0.3-era method name message/send
+      alongside the 1.0 SendMessage name its descriptor advertises. This was a read-only public search;
+      no personal or health data was submitted and the agent accepts none.
+  - url: https://www.elderlycarematch.com/a2a/v1
+    method: POST
+    body: '{"jsonrpc":"2.0","id":3,"method":"tasks/get","params":{"id":"nonexistent"}}'
+    http_status: 200
+    response: '{"jsonrpc":"2.0","id":3,"error":{"code":-32001,"message":"Task not found"}}'
+    note: TaskNotFoundError (-32001) is the A2A-defined code for an unknown task id.
+  - url: https://www.elderlycarematch.com/a2a/v1
+    method: POST
+    body: '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+    http_status: 200
+    response: '{"jsonrpc":"2.0","id":2,"error":{"code":-32601,"message":"Unknown method: tools/list"}}'
+    note: Not an MCP server — the MCP discovery call is rejected with JSON-RPC -32601 Method not found.
+  - url: https://a2aregistry.org
+    http_status: 200
+    note: >-
+      The card is listed on a2aregistry.org (protocolVersion "1.0", is_healthy true, conformance true,
+      task_conformance WORKING), which is how the provider entered the harvest backlog. The registry was the
+      lead; the card above was fetched directly from the provider's host.
+agent_card:
+  name: Elderly Care Match
+  description: >-
+    Search licensed Washington senior care: adult family homes (AFH), assisted living, memory care, nursing
+    homes / skilled nursing, independent living and 55+ communities. Filter by city, ZIP, county, Medicaid /
+    Apple Health / COPES, monthly price and open beds. Read-only and no PHI/PII; placement help is a public
+    form link only. Coverage strongest in the Seattle-Tacoma-Bellevue metro and statewide Washington.
+  version: 1.5.3
+  supported_interfaces:
+  - url: https://www.elderlycarematch.com/a2a/v1
+    protocol_binding: JSONRPC
+    protocol_version: '1.0'
+  url: https://www.elderlycarematch.com/a2a/v1
+  protocol_version: '1.0'
+  preferred_transport: JSONRPC
+  provider:
+    organization: Elderly Care Match
+    url: https://www.elderlycarematch.com
+  documentation_url: https://www.elderlycarematch.com/llms.txt
+  icon_url: https://www.elderlycarematch.com/images/brand/icon-512.png
+  capabilities:
+    streaming: false
+    push_notifications: false
+    extended_agent_card: false
+  default_input_modes: [text/plain, application/json]
+  default_output_modes: [text/plain, text/markdown, application/json]
+  security_schemes: null
+  security: null
+  skill_count: 4
+  skills:
+  - {id: find-care-facilities, name: Find senior care facilities, tags: 27, examples: 7, note: 'Natural language or a JSON filter object (location, careTypes, acceptsMedicaid, hasVacancy, min/maxMonthlyPrice, radiusMiles, search, limit<=20).'}
+  - {id: get-facility-details, name: Get a facility profile, tags: 8, examples: 3, note: 'By slug or id; unknown slug returns found:false rather than a nearest guess.'}
+  - {id: search-care-guides, name: Search elder-care guides, tags: 15, examples: 6, note: 'Learning Center articles by search term or question; slug returns one article in full.'}
+  - {id: request-placement-help, name: Hand off to a care advisor, tags: 6, examples: 3, note: 'Returns only the public callback-request URL; explicitly accepts no personal or health data.'}
+conformance:
+  spec: A2A 1.0.0
+  grade: flavored
+  grade_claimed_note: >-
+    Graded with the catalog's shared rubric (lib_agent_card.grade_agent_card), which is the only grader that
+    decides. The card FAILS one hard check — there is no top-level protocolVersion — so it is `flavored`
+    even though it is, in practice, one of the most complete and best-behaved cards in the catalog. The
+    version is declared, but inside supportedInterfaces[0].protocolVersion ("1.0"), which is where the A2A
+    1.0 AgentCard object moved it; the rubric reads the top-level field. Recorded as the rules produce it,
+    with the observation kept here so a reader sees both.
+  protocol_version: '1.0'
+  protocol_version_location: supportedInterfaces[0].protocolVersion (top-level field absent)
+  preferred_transport: JSONRPC
+  hard_checks:
+    capabilities_is_object: true
+    protocol_version_present: false
+    skills_is_array: true
+  optional_fields:
+    default_input_modes: true
+    default_output_modes: true
+    preferred_transport: false
+  deviations:
+  - id: no-protocolVersion
+    field: protocolVersion
+    observed: absent at the top level; present as supportedInterfaces[0].protocolVersion = "1.0"
+    note: The one hard-check failure. A 1.0-shaped card with the version nested in the interface entry.
+  - id: supportedInterfaces-instead-of-additionalInterfaces
+    field: supportedInterfaces / url / preferredTransport
+    observed: a single supportedInterfaces[] entry (JSONRPC, 1.0); no top-level url, preferredTransport or additionalInterfaces
+    note: >-
+      Consistent with the A2A 1.0 AgentCard, which replaced the 0.3 top-level url + preferredTransport +
+      additionalInterfaces triple with supportedInterfaces[]. A reader written against 0.3 finds no url.
+  - field: securitySchemes / security
+    observed: absent
+    note: >-
+      No authentication is declared and none is required — the endpoint answered an anonymous SendMessage
+      with real results. The site's llms.txt states "no authentication required" explicitly. Correct for
+      an open read-only agent, but a client cannot tell "open" from "forgot to declare" without probing.
+  - field: capabilities.streaming / pushNotifications / extendedAgentCard
+    observed: all false
+    note: Declared honestly; the agent is request-response only.
+  - field: signatures
+    observed: absent
+    note: No JWS signature block, so the card's authenticity rests on TLS to www.elderlycarematch.com (HSTS max-age 63072000 is set).
+surface_relationship:
+  note: >-
+    A2A is the ONLY machine interface Elderly Care Match publishes. There is no OpenAPI, no GraphQL and no
+    MCP server (tools/list is rejected with -32601), and the internal REST router under /api/ is disallowed
+    by robots.txt for every crawler and answers {"error":"Not found"} at its roots, so it was not probed
+    further. The four A2A skills are the whole public contract, and the site's llms.txt is the whole public
+    documentation. The site itself is a client-rendered SPA (Vite bundle, empty #root shell), so the human
+    pages exist only after script execution; the agent surface is, unusually, MORE machine-readable than the
+    website.

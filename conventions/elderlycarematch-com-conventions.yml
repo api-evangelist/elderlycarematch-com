@@ -1,0 +1,85 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.elderlycarematch.com/a2a/v1
+derived_from: a2a/elderlycarematch-com-agent-card.json
+docs:
+- https://www.elderlycarematch.com/llms.txt
+base_url: https://www.elderlycarematch.com/a2a/v1
+protocol: A2A 1.0 over JSON-RPC 2.0 (HTTP POST; GET returns a self-descriptor)
+media_type: application/json
+surface_kind: read-only
+auth:
+  style: none — anonymous; no securitySchemes declared, no key, no token, no OAuth discovery on the host
+  detail: authentication/elderlycarematch-com-authentication.yml
+request_shape:
+  method_names:
+    a2a_1_0: [SendMessage, GetTask, ListTasks]
+    a2a_0_3_aliases_accepted: [message/send, tasks/get]
+    note: The GET descriptor advertises the 1.0 names; the 0.3-era message/send and tasks/get were also accepted on probe.
+  message:
+    role: user (0.3 form) or ROLE_USER (1.0 form, per the descriptor's example)
+    parts: text part (text/plain) or data part (application/json) — the card's defaultInputModes
+    skill_selection: >-
+      Inferred from the message content; there is no explicit skill id parameter. A JSON data part matching a
+      skill's documented filter object (e.g. {"location": "98405", "careTypes": ["Adult AFH"], "hasVacancy": true})
+      or a bare {"slug": "..."} selects the skill deterministically; free text is routed by the agent.
+response_shape:
+  result: >-
+    {task: {id, contextId, status: {state, timestamp}, artifacts: [{artifactId, name (= skill id),
+    description, parts: [{text}]}]}} — the observed SendMessage result returned status.state
+    TASK_STATE_COMPLETED synchronously with a text/markdown artifact.
+  output_modes: [text/plain, text/markdown, application/json]
+  streaming: false (capabilities.streaming false; no SSE)
+  push_notifications: false
+pagination:
+  style: limit-only
+  params: [limit (max 20, find-care-facilities)]
+  response_fields: []
+  note: >-
+    No cursor or offset. The artifact text says "More may be in range — ask for a higher limit to see them",
+    and limit is capped at 20 by the skill description, so a client narrows the query (radiusMiles, careTypes,
+    price bounds) rather than paging.
+field_expansion: none
+metadata: none
+request_id_tracing:
+  header: none documented
+  observed: >-
+    Responses carry x-vercel-id, x-railway-request-id and x-hikari-trace edge identifiers — infrastructure
+    trace ids, not a documented correlation header a client can set.
+versioning:
+  scheme: path segment on the endpoint (/a2a/v1) plus card version (1.5.3) and protocolVersion "1.0"
+  policy_published: false
+  detail: lifecycle/elderlycarematch-com-lifecycle.yml
+error_envelope:
+  shape: JSON-RPC 2.0 error object {code, message}
+  observed_codes: [-32601 Unknown method, -32001 Task not found]
+  detail: errors/elderlycarematch-com-problem-types.yml
+rate_limit_signaling:
+  headers: none observed
+  detail: rate-limits/elderlycarematch-com-rate-limits.yml
+idempotency:
+  supported: na
+  coverage: na
+  mechanism: null
+  header: null
+  scope: []
+  retention: na
+  description: >-
+    Not applicable: there is no write surface. All four skills read public listings or articles, and the
+    one that concerns a family (request-placement-help) returns a URL to a public web form and, per the
+    card, "exposes no endpoint that would accept" personal data. Replaying any call has no side effect.
+dry_run_mode:
+  supported: na
+  description: Not applicable — read-only surface; every call is already side-effect free.
+reversibility:
+  grade: na
+  description: >-
+    Not applicable — the agent performs no action that could need reversing. It creates nothing, books
+    nothing, submits nothing and holds no bed; the card states that openings and prices are "a reason to
+    call, not a held bed", and the placement hand-off is completed by the family on the website, outside
+    the agent. No cancel/refund/void/undo operation exists because no forward operation exists.
+  write_surfaces: []
+notes:
+- The endpoint is CORS-open (access-control-allow-origin *), so a browser-side agent can call it directly.
+- Coverage is Washington State; the card asks agents to route non-WA searches to another directory rather than expect empty results to mean "no care exists".
+- Care types are an enumerated vocabulary with documented aliases (AFH -> Adult AFH, SNF -> Nursing Home, etc.); sending an unlisted care type is the most likely client error and is documented in the skill description rather than in an error code.

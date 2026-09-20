@@ -1,0 +1,30 @@
+generated: '2026-09-19'
+method: searched
+source: https://www.elderlycarematch.com/llms.txt
+docs:
+- https://www.elderlycarematch.com/terms-of-service
+- https://www.elderlycarematch.com/providers
+plan_count: 0
+api_plan_count: 0
+currency: USD
+model: free, anonymous, read-only agent; no developer plan exists
+summary: >-
+  Elderly Care Match publishes no API or agent plans. The A2A endpoint is open to any caller with no key,
+  no account and no quota page, and llms.txt states the platform is free to families ("families never pay
+  a fee"). The business is funded by care facilities that subscribe to list ("Our platform is funded by
+  care facilities who subscribe to list their services", site FAQ) and by a vendor marketplace; the Terms
+  of Service section 4 say subscriptions are processed through Stripe and renew monthly, and the privacy
+  policy names a FREE plan and paid subscriber facilities. No price for any listing tier is published
+  anywhere a crawler can read — the /providers page is a client-rendered SPA route and the JS bundle
+  carries no listing prices. Those subscriptions are listing products for care operators, not API plans,
+  and would not be counted here even if priced.
+plans: []
+enterprise:
+  contact_only: false
+  note: Not applicable; there is nothing to buy on the machine surface.
+x-evidence:
+  fetched: '2026-09-19'
+  probes:
+  - {url: 'https://www.elderlycarematch.com/llms.txt', status: 200, quote: 'Listings are free to browse, many are license-verified, and families never pay a fee.'}
+  - {url: 'https://www.elderlycarematch.com/providers', status: 200, note: SPA index shell (2,316 bytes); prices, if any, render client-side}
+  - {url: 'https://www.elderlycarematch.com/a2a/v1', status: 200, note: anonymous SendMessage succeeded — no paywall on the agent}

@@ -1,0 +1,18 @@
+generated: '2026-09-19'
+method: searched
+source: registry searches 2026-09-19
+package_count: 0
+packages: []
+searched:
+- {registry: npm, query: 'https://registry.npmjs.org/elderlycarematch', status: 404}
+- {registry: npm, query: 'https://registry.npmjs.org/-/v1/search?text=elderlycarematch&size=5', result: 0 packages}
+- {registry: pypi, query: 'https://pypi.org/pypi/elderlycarematch/json', status: 404}
+- {registry: github-org, query: 'https://api.github.com/orgs/elderlycarematch', status: 404}
+- {registry: github-user, query: 'https://api.github.com/users/elderlycarematch', status: 404}
+- {registry: github-search, query: 'https://api.github.com/search/repositories?q=elderlycarematch', result: 0 repositories}
+- {registry: cdn, query: 'https://www.elderlycarematch.com/assets/index-BTnShf-R.js', note: 'The site''s own Vite bundle; a first-party web app, not a distributable client — no unpkg/jsDelivr reference found'}
+note: >-
+  Elderly Care Match publishes no client library, CLI or SDK in any registry searched, has no GitHub
+  presence under its name, and its llms.txt and agent card reference none — the documented way in is a
+  generic A2A client speaking JSON-RPC to https://www.elderlycarematch.com/a2a/v1. No Packages or SDKs
+  pointer is emitted.

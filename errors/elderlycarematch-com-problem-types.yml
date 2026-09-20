@@ -1,0 +1,48 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.elderlycarematch.com/a2a/v1
+probed: true
+docs: https://www.elderlycarematch.com/llms.txt
+format: jsonrpc-2.0-error
+envelope:
+  media_type: application/json
+  http_status_on_error: 200
+  fields:
+  - name: jsonrpc
+    description: Always "2.0".
+  - name: id
+    description: Echo of the request id.
+  - name: error.code
+    description: Integer JSON-RPC code; standard codes for protocol errors, A2A-defined -32001..-32007 range for task errors.
+  - name: error.message
+    description: Short human string.
+  note: >-
+    Not RFC 9457 and not HTTP-status-coded — protocol and application errors both ride an HTTP 200 with a
+    JSON-RPC error object, as A2A over JSON-RPC prescribes. There is no error reference page; the two
+    codes below are the ones observed, and llms.txt documents none. Skill-level "soft" failures are returned
+    as successful results with explanatory content instead (an unknown facility slug returns found:false;
+    a guide search with no match returns the most recent guides labelled as recent, not as matches), so a
+    client must read the result body, not just the error field, to know whether it got what it asked for.
+observed:
+- {code: -32601, message: 'Unknown method: tools/list', http_status: 200, trigger: 'POST {"method":"tools/list"}', standard: JSON-RPC 2.0 Method not found}
+- {code: -32001, message: Task not found, http_status: 200, trigger: 'POST tasks/get with id "nonexistent"', standard: A2A TaskNotFoundError}
+- {http_status: 404, body: '{"error":"Not found"}', url: 'https://www.elderlycarematch.com/api', note: 'The internal REST router''s generic 404 (application/json, 21 bytes); /api/ is robots-disallowed and not part of the public surface.'}
+problem_types:
+- code: -32601
+  title: Method not found
+  status: 200
+  remediation: Use one of SendMessage, GetTask or ListTasks (the 1.0 names from the GET descriptor); message/send and tasks/get are also accepted.
+- code: -32001
+  title: Task not found
+  status: 200
+  remediation: Task ids come from a prior SendMessage result; tasks complete synchronously, so GetTask is rarely needed.
+- code: null
+  title: Unlisted facility slug
+  status: 200
+  shape: result artifact with found:false
+  remediation: Take slugs only from a find-care-facilities result; the agent never returns a nearest guess.
+- code: null
+  title: No matching guides
+  status: 200
+  shape: result artifact listing the most recent guides, labelled as recent
+  remediation: Treat a "recent" label as a miss, not a match.

@@ -1,18 +1,88 @@
 aid: elderlycarematch-com
 name: Elderly Care Match
-description: 'Elderly Care Match is a company surfaced via the API Evangelist harvest backlog (source:
-  a2a-registry) and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Elderly Care Match is a Washington State senior-care directory and placement service that helps families
+  find and compare licensed adult family homes (AFH), assisted living, memory care, nursing homes / skilled
+  nursing and independent living, with listings that are free to browse, many cross-checked against the WA
+  DSHS/ALTSA licence registry, and coverage strongest across the Seattle-Tacoma-Bellevue / Puget Sound metro.
+  Its only machine interface is an Agent2Agent (A2A 1.0) agent: a card served at
+  /.well-known/agent-card.json and a JSON-RPC 2.0 endpoint at https://www.elderlycarematch.com/a2a/v1 that
+  answers anonymously with four read-only skills — search facilities by location, care type, Medicaid
+  acceptance, vacancy and price; fetch a facility's public profile; search the Learning Center guides; and
+  hand a family off to a care advisor by returning a public form URL. It publishes no OpenAPI, SDK or MCP
+  server; llms.txt is the documentation and robots.txt explicitly welcomes AI crawlers on /.well-known/ and
+  /a2a/.
 url: https://raw.githubusercontent.com/api-evangelist/elderlycarematch-com/refs/heads/main/apis.yml
+image: https://www.elderlycarematch.com/images/brand/icon-512.png
 x-type: company
 x-source: harvest:a2a-registry
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
-- Company
-apis: []
+- Senior Care
+- Elder Care
+- Assisted Living
+- Memory Care
+- Adult Family Homes
+- Nursing Homes
+- Care Directory
+- Healthcare
+- Agents
+- A2A
+- agent-native
+- Washington State
+- United States
+tags_raw:
+- Senior care
+- Elder care
+- Assisted living
+- Memory care
+- Adult family homes
+- Nursing homes
+- Care directory
+- Healthcare
+- Agents
+- A2A
+- Agent-native
+- Washington State
+- United States
+apis:
+- aid: elderlycarematch-com:elderly-care-match-a2a-agent
+  name: Elderly Care Match A2A Agent
+  description: >-
+    Agent2Agent (A2A 1.0) surface: an agent card at https://www.elderlycarematch.com/.well-known/agent-card.json
+    (version 1.5.3, one JSONRPC interface, also mirrored at the legacy /.well-known/agent.json) and a JSON-RPC
+    2.0 endpoint at https://www.elderlycarematch.com/a2a/v1 that requires no authentication and answers
+    SendMessage / GetTask / ListTasks (the 0.3-era message/send and tasks/get are accepted too). Four
+    read-only skills — find-care-facilities, get-facility-details, search-care-guides and
+    request-placement-help — return operator-maintained public listings for Washington State senior care;
+    the agent accepts and returns no resident, family or health information. Streaming and push
+    notifications are declared unsupported; results complete synchronously as a Task with a text/markdown
+    or JSON artifact.
+  humanURL: https://www.elderlycarematch.com/llms.txt
+  baseURL: https://www.elderlycarematch.com/a2a/v1
+  tags:
+  - A2A
+  - agent-native
+  - Senior Care
+  - Care Directory
+  properties:
+  - type: AgentCard
+    url: a2a/elderlycarematch-com-a2a.yml
+  - type: AgentCard
+    name: A2A Agent Card (provider-hosted)
+    url: https://www.elderlycarematch.com/.well-known/agent-card.json
+  - type: Documentation
+    url: https://www.elderlycarematch.com/llms.txt
+  - type: Authentication
+    url: authentication/elderlycarematch-com-authentication.yml
+  - type: Conventions
+    url: conventions/elderlycarematch-com-conventions.yml
+  - type: ErrorCatalog
+    url: errors/elderlycarematch-com-problem-types.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +90,54 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://elderlycarematch.com/
+  url: https://www.elderlycarematch.com/
+- type: Blog
+  url: https://www.elderlycarematch.com/learning-center
+- type: Support
+  url: https://www.elderlycarematch.com/contact
+- type: TermsOfService
+  url: https://www.elderlycarematch.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.elderlycarematch.com/privacy-policy
+- type: AgentCard
+  url: a2a/elderlycarematch-com-a2a.yml
+- type: LLMsTxt
+  url: llms/elderlycarematch-com-llms.txt
+- type: LLMsTxt
+  name: llms.txt (provider-hosted)
+  url: https://www.elderlycarematch.com/llms.txt
+- type: WellKnown
+  url: well-known/elderlycarematch-com-well-known.yml
+- type: Authentication
+  url: authentication/elderlycarematch-com-authentication.yml
+- type: Conventions
+  url: conventions/elderlycarematch-com-conventions.yml
+- type: ErrorCatalog
+  url: errors/elderlycarematch-com-problem-types.yml
+- type: Conformance
+  url: conformance/elderlycarematch-com-conformance.yml
+- type: Lifecycle
+  url: lifecycle/elderlycarematch-com-lifecycle.yml
+- type: Plans
+  url: plans/elderlycarematch-com-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/elderlycarematch-com-rate-limits.yml
+- type: Packages
+  url: packages/elderlycarematch-com-packages.yml
+- type: DomainSecurity
+  url: security/elderlycarematch-com-domain-security.yml
+- type: RegulatoryPosture
+  url: regulatory/elderlycarematch-com-regulatory-posture.yml
+- type: DataSubjectRequest
+  url: https://www.elderlycarematch.com/privacy-policy
+- type: IncidentNotification
+  url: https://www.elderlycarematch.com/privacy-policy
+- type: DataResidency
+  url: https://www.elderlycarematch.com/privacy-policy
+- type: Subprocessors
+  url: https://www.elderlycarematch.com/privacy-policy
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 14
+  pass: local-v3

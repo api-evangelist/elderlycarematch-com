@@ -1,0 +1,42 @@
+generated: '2026-09-19'
+method: probed
+source: https://www.elderlycarematch.com/.well-known/agent-card.json
+docs:
+- https://www.elderlycarematch.com/llms.txt
+- https://www.elderlycarematch.com/a2a/v1
+summary:
+  types: []
+  api_key_in: []
+  oauth2_flows: []
+  bearer: false
+  credential_classes: 0
+  headline: >-
+    No authentication of any kind. The A2A agent card declares no securitySchemes and no security
+    requirement, the GET descriptor at /a2a/v1 names none, the site's llms.txt says "no authentication
+    required" in as many words, and an anonymous SendMessage returned real search results. There is no
+    signup, no key, no token, and no OAuth/OIDC discovery document on the host (openid-configuration,
+    oauth-authorization-server and oauth-protected-resource all 404). The surface is read-only public
+    directory data, and the one skill that touches a family (request-placement-help) returns a URL for the
+    family to fill in themselves rather than accepting anything.
+schemes: []
+declared_in_card:
+  securitySchemes: absent
+  security: absent
+observed:
+- url: https://www.elderlycarematch.com/a2a/v1
+  method: POST
+  credential_sent: none
+  http_status: 200
+  result: JSON-RPC result with a completed Task and one artifact (five facility listings)
+  fetched: '2026-09-19'
+- url: https://www.elderlycarematch.com/.well-known/oauth-authorization-server
+  http_status: 404
+- url: https://www.elderlycarematch.com/.well-known/oauth-protected-resource
+  http_status: 404
+- url: https://www.elderlycarematch.com/.well-known/openid-configuration
+  http_status: 404
+note: >-
+  The human site has accounts (family, care provider, licensed agent, administrator roles per the privacy
+  policy) behind server-side auth on /business/, /agent/, /dashboard/ and the other robots-disallowed
+  prefixes, and the internal /api/ router serving them is disallowed to every crawler. None of that is a
+  public API surface and none of it was probed. This profile records only the public agent.

@@ -1,0 +1,125 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://www.elderlycarematch.com/privacy-policy
+docs:
+- https://www.elderlycarematch.com/terms-of-service
+- https://www.elderlycarematch.com/cookie-policy
+- https://www.elderlycarematch.com/accessibility
+reading_note: >-
+  The site is a client-rendered SPA: every legal route (/privacy-policy, /terms-of-service, /cookie-policy,
+  /accessibility) answers 200 with the same 2,316-byte index shell, and so does every conventional path
+  probed below — a 200 here is never evidence on its own. The statements quoted were read from the page
+  text compiled into the site's own JS bundle (https://www.elderlycarematch.com/assets/index-BTnShf-R.js,
+  200, 1.79 MB), which is what a browser renders at those routes. Each quote is verbatim from that source.
+signals:
+  data_subject_request:
+    present: true
+    url: https://www.elderlycarematch.com/privacy-policy
+    regime_claimed: HIPAA (the policy frames rights as HIPAA rights over PHI collected by the intake form)
+    channel: support@elderlycarematch.com (also named as "HIPAA Privacy Officer" in the cookie policy)
+    rights_stated: [access, amendment, accounting of disclosures, request restrictions, confidential communications, breach notification, withdraw consent]
+    evidence:
+    - {source: 'https://www.elderlycarematch.com/privacy-policy', status: 200, quote: '"6. Your HIPAA Rights ... 6.1 Right to Access — You have the right to inspect and obtain a copy of your PHI. To request access, contact us at support@elderlycarematch.com"'}
+    - {source: 'https://www.elderlycarematch.com/privacy-policy', status: 200, quote: '"7.2 Secure Deletion — Upon account deletion or retention period expiration, we securely delete all PHI using cryptographic erasure and overwriting methods that make recovery impossible."'}
+    note: >-
+      A dated policy (last updated December 26, 2025) with an enumerated rights list and a named contact
+      route — the substance, not the word. Scoped to HIPAA PHI; no CCPA/GDPR request route, no portability
+      right and no self-service request form (/privacy/requests is the SPA shell).
+  incident_notification:
+    present: true
+    url: https://www.elderlycarematch.com/privacy-policy
+    stated_sla: within 60 days as required by HIPAA
+    evidence:
+    - {source: 'https://www.elderlycarematch.com/privacy-policy', status: 200, quote: '"6.6 Right to Breach Notification — In the event of a breach of your unsecured PHI, we will notify you within 60 days as required by HIPAA."'}
+    - {source: 'https://www.elderlycarematch.com/privacy-policy', status: 200, quote: '"60-day breach notification procedures" (section 4.3 Audit and Monitoring)'}
+    note: The window is stated verbatim and is the HIPAA Breach Notification Rule outer bound; it is a commitment to individuals, not a customer/API-consumer incident SLA.
+  data_residency:
+    present: true
+    url: https://www.elderlycarematch.com/privacy-policy
+    region: United States
+    evidence:
+    - {source: 'https://www.elderlycarematch.com/privacy-policy', status: 200, quote: '"9. International Users — Our services are provided from the United States. All data is stored in HIPAA-compliant data centers within the United States. By using our services, you consent to the transfer and processing of your information in the United States."'}
+    note: A published statement, not an inference from hosting. (The observed edge is Vercel iad1 with a Railway origin, which is consistent with it, but the statement is what is recorded.)
+  subprocessors:
+    present: true
+    url: https://www.elderlycarematch.com/privacy-policy
+    form: named Business Associate list inside the privacy policy (not a standalone dated subprocessor table)
+    named: [MongoDB Atlas, Stripe]
+    evidence:
+    - {source: 'https://www.elderlycarematch.com/privacy-policy', status: 200, quote: '"5.2 Business Associates — We have signed Business Associate Agreements (BAAs) with: MongoDB Atlas ... Stripe ... All business associates are contractually required to protect your PHI and comply with HIPAA regulations."'}
+    note: >-
+      Two named processors with the contractual instrument stated (BAA). Recorded as present because the
+      list names real parties and the legal basis; it is weaker than a standalone subprocessor page with
+      dates and a change-notice mechanism, and /legal/subprocessors is the SPA shell.
+  accessibility_conformance:
+    present: false
+    self_declaration_url: https://www.elderlycarematch.com/accessibility
+    self_declaration_verbatim: '"We strive to meet or exceed the requirements of the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA." (Accessibility Statement, last updated October 21, 2025; lists WCAG 2.1 AA, Section 508 and ADA Title III under "Accessibility Standards"; feedback channel accessibility@elderlycarematch.com)'
+    probed:
+    - {url: 'https://www.elderlycarematch.com/accessibility', status: 200, note: SPA shell; statement text read from the bundle}
+    - {url: 'https://www.elderlycarematch.com/accessibility/vpat', status: 200, note: SPA shell — no VPAT route exists in the bundle}
+    note: >-
+      Recorded as ABSENT on purpose, the same call as crossamerica-partners: a dated statement of intent
+      naming a standard and level, with a feedback address, but no VPAT, ACR or per-criterion conformance
+      report. The pipeline rule requires the report, so no AccessibilityConformance pointer is emitted; the
+      statement is kept here so a reader sees exactly what the provider publishes. The listed phone number
+      (+1-555-123-4567) is a placeholder, which also argues against reading the page as a finished report.
+  age_assurance:
+    present: false
+    probed:
+    - {url: 'https://www.elderlycarematch.com/privacy-policy', status: 200}
+    statement_verbatim: '"8. Children''s Privacy — Our services are not directed to individuals under 18 years of age. We do not knowingly collect PHI from children."'
+    note: An audience disclaimer, not an assurance mechanism — no age gate, verification or parental-consent flow is described.
+probed_absent:
+- signal: sbom
+  urls:
+  - {url: 'https://www.elderlycarematch.com/security/sbom', status: 200, note: SPA shell}
+  note: No bill of materials published. Never derived — search only.
+- signal: support_lifetime
+  urls:
+  - {url: 'https://www.elderlycarematch.com/terms-of-service', status: 200, note: SPA shell; terms text read from the bundle}
+  note: The terms state no support period for the agent or the site.
+- signal: training_data_summary
+  urls:
+  - {url: 'https://www.elderlycarematch.com/ai/transparency', status: 200, note: SPA shell}
+- signal: ai_transparency
+  urls:
+  - {url: 'https://www.elderlycarematch.com/ai/transparency', status: 200, note: SPA shell}
+  - {url: 'https://www.elderlycarematch.com/wac', status: 200, note: SPA shell}
+  note: >-
+    The site ships an AI feature — the /wac page is "Instant Compliance Answers", a Washington care-regulation
+    Q&A "grounded in the actual WAC code, with the sections cited" — but publishes no AI transparency or
+    model disclosure statement about it. The A2A agent card and llms.txt describe the agent's limits (no
+    medical, legal or financial advice; read-only; no PHI), which is scope disclosure rather than a
+    transparency report.
+- signal: global_privacy_control
+  urls:
+  - {url: 'https://www.elderlycarematch.com/privacy-policy', status: 200}
+  - {url: 'https://www.elderlycarematch.com/cookie-policy', status: 200}
+  note: >-
+    No GPC or Do-Not-Sell statement. The cookie policy says the site uses no advertising, social-media
+    tracking, third-party-analytics or cross-site-tracking cookies and the privacy policy says "We never
+    sell your Protected Health Information", but neither mentions GPC; honored is not set from a header probe.
+- signal: transparency_report
+  urls:
+  - {url: 'https://www.elderlycarematch.com/transparency', status: 200, note: SPA shell}
+- signal: notice_and_action
+  urls:
+  - {url: 'https://www.elderlycarematch.com/legal/report-content', status: 200, note: SPA shell}
+  note: Listings are operator-maintained and the FAQ says licence status is reviewed against public records, but no report-a-listing route or notice-and-action policy is published.
+- signal: exit_assistance
+  urls:
+  - {url: 'https://www.elderlycarematch.com/privacy-policy', status: 200}
+  note: No export or portability commitment; the policy's deletion clause is the only data-lifecycle promise.
+- signal: dpa
+  urls:
+  - {url: 'https://www.elderlycarematch.com/legal/dpa', status: 200, note: SPA shell}
+  note: No DPA offered to customers; the BAA is described as signed with the provider's own processors, not offered to care operators.
+x-evidence:
+  fetched: '2026-09-19'
+  bundle: {url: 'https://www.elderlycarematch.com/assets/index-BTnShf-R.js', status: 200, bytes: 1794189}
+  privacy_policy_last_updated: '2025-12-26'
+  terms_last_updated: '2025-12-26'
+  cookie_policy_last_updated: '2025-10-21'
+  accessibility_statement_last_updated: '2025-10-21'
