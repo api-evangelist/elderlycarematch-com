@@ -32,7 +32,7 @@ tags:
 - Healthcare
 - Agents
 - A2A
-- agent-native
+- Agent-Native
 - Washington State
 - United States
 tags_raw:
@@ -49,6 +49,7 @@ tags_raw:
 - Agent-native
 - Washington State
 - United States
+- agent-native
 apis:
 - aid: elderlycarematch-com:elderly-care-match-a2a-agent
   name: Elderly Care Match A2A Agent
@@ -65,6 +66,11 @@ apis:
   humanURL: https://www.elderlycarematch.com/llms.txt
   baseURL: https://www.elderlycarematch.com/a2a/v1
   tags:
+  - A2A
+  - Agent-Native
+  - Senior Care
+  - Care Directory
+  tags_raw:
   - A2A
   - agent-native
   - Senior Care
@@ -141,3 +147,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 14
   pass: local-v3
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://www.elderlycarematch.com/.well-known/agent-card.json"
+  grade: "flavored"
+  protocol_version: "1.0"
+  control: 404
