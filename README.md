@@ -64,5 +64,100 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Elderly Care Match is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://elderlycarematch.com/
+Elderly Care Match is a Washington State senior-care directory and placement service that helps families find and compare licensed adult family homes (AFH), assisted living, memory care, nursing homes / skilled nursing and independent living, with listings that are free to browse, many cross-checked against the WA DSHS/ALTSA licence registry, and coverage strongest across the Seattle-Tacoma-Bellevue / Puget Sound metro. Its only machine interface is an Agent2Agent (A2A 1.0) agent: a card served at /.well-known/agent-card.json and a JSON-RPC 2.0 endpoint at https://www.elderlycarematch.com/a2a/v1 that answers anonymously with four read-only skills — search facilities by location, care type, Medicaid acceptance, vacancy and price; fetch a facility's public profile; search the Learning Center guides; and hand a family off to a care advisor by returning a public form URL. It publishes no OpenAPI, SDK or MCP server; llms.txt is the documentation and robots.txt explicitly welcomes AI crawlers on /.well-known/ and /a2a/.
+
+**Areas:** Senior Care · Elder Care · Assisted Living · Memory Care · Adult Family Homes · Nursing Homes · Care Directory · Healthcare · Agents · A2A · Agent-Native · Washington State
+
+## Elderly Care Match on APIs.io
+
+Everything profiled for Elderly Care Match is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/elderlycarematch-com/](https://apis.io/providers/elderlycarematch-com/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Elderly Care Match A2A Agent](https://apis.io/apis/elderlycarematch-com/elderly-care-match-a2a-agent/) — Agent2Agent (A2A 1.0) surface: an agent card at https://www.elderlycarematch.com/.well-known/agent-card.json (version 1.5.3, one JSONRPC interface, also…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Elderlycarematch Com Authentication](https://apis.io/security/elderlycarematch-com/elderlycarematch-com-authentication/)
+- [Elderlycarematch Com Domain Security](https://apis.io/security/elderlycarematch-com/elderlycarematch-com-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Elderlycarematch Com Plans Pricing](https://apis.io/plans/elderlycarematch-com/elderlycarematch-com-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Elderlycarematch Com Rate Limits](https://apis.io/rate-limits/elderlycarematch-com/elderlycarematch-com-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.elderlycarematch.com/)
+- [Support](https://www.elderlycarematch.com/contact)
+- [Blog](https://www.elderlycarematch.com/learning-center)
+- [Terms of service](https://www.elderlycarematch.com/terms-of-service)
+- [Privacy policy](https://www.elderlycarematch.com/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 22.4** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 28.6 |
+| Access clarity | 21.1 |
+
+**Agent readiness 9.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | flavored (partial credit) |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 32.0** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/elderlycarematch-com/](https://apis.io/providers/elderlycarematch-com/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Elderly Care Match: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/elderlycarematch-com/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
